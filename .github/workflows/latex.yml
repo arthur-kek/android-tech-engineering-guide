@@ -1,0 +1,37 @@
+name: Build PDF
+
+on:
+  push:
+    paths:
+      - 'tex/**'
+  pull_request:
+    paths:
+      - 'tex/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Compile LaTeX document
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Install LaTeX
+      run: sudo apt-get update && sudo apt-get install -y texlive-latex-extra
+
+    - name: Compile LaTeX (2-pass for TOC)
+      run: |
+        mkdir -p output
+        pdflatex -jobname=compiled-guide -output-directory=output tex/main.tex
+        pdflatex -jobname=compiled-guide -output-directory=output tex/main.tex
+
+    - name: Commit PDF
+      uses: EndBug/add-and-commit@v9
+      with:
+        author_name: github-actions
+        author_email: actions@github.com
+        message: "chore: regenerate compiled PDF"
+        add: 'output/compiled-guide.pdf'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
