@@ -6,6 +6,7 @@
 *.fls
 *.fdb_latexmk
 *.synctex.gz
+.DS_Store
 
 # Ignore all output except the compiled PDF
 output/*
