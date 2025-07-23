@@ -13,6 +13,7 @@
 \usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
 \setcounter{tocdepth}{3}
+\usepackage{pifont}
 
 % ---------- Page Setup ----------
 \geometry{margin=1in}
@@ -175,6 +176,7 @@ class ReportPrinter {
 
 \textbf{Focus Point:} Each module should be internally tight (cohesion) and externally loose (coupling). These qualities are critical across all layers of software architecture, from class design to modular systems.
 
+
 \subsection{SOLID Principles}
 
 SOLID is a mnemonic acronym for five design principles in object-oriented programming: Single Responsibility, Open/Closed, Liskov Substitution, Interface Segregation, and Dependency Inversion. Each principle targets a different axis of code quality: modularity, extensibility, substitutability, cohesion, and coupling.
@@ -272,6 +274,7 @@ New discount types (e.g. `StudentDiscount`, `BlackFridayDiscount`) can be introd
 
 \textbf{Deep Dive:}  
 At the bytecode level, the difference between the two approaches is critical for JIT optimization. Monolithic \texttt{if-else} trees hinder method inlining and introduce branch misprediction. In contrast, polymorphism enables class-level modularization and cleaner call-site resolution, benefiting both runtime performance and testability.
+
 
 \subsubsection{L - Liskov Substitution Principle (LSP)}
 
@@ -682,11 +685,11 @@ abstract class Animal {
 \hline
 \textbf{Feature} & \textbf{Interface} & \textbf{Abstract Class} \\
 \hline
-Instance State           & x & v \\
-Default Implementations  & x & v \\
-Constructors             & x & v \\
-Multiple Inheritance     & x & x \\
-Inheritance Type         & Capability-based & Hierarchical \\
+Instance State           & \ding{55} & \ding{51} \\
+Default Implementations  & \ding{55} (Java 8+: \ding{51}) & \ding{51} \\
+Constructors             & \ding{55} & \ding{51} \\
+Multiple Inheritance     & \ding{51} & \ding{55} \\
+Inheritance Type         & Implementation-based & Inheritance-based \\
 \hline
 \end{tabular}
 \end{center}
@@ -4498,16 +4501,17 @@ fun multiFlow(): Flow<Int> = channelFlow {
 \end{lstlisting}
 
 \textbf{Deep Dive:}
+
 \begin{table}[h!]
 \centering
-\begin{tabular}{|l|l|l|l|}
+\begin{tabular}{|l|c|c|c|}
 \hline
 \textbf{Type} & \textbf{Cold/Hot} & \textbf{Keeps Last Value} & \textbf{Supports Multiple Collectors} \\
 \hline
-\texttt{Flow} & Cold & No & No \\
-\texttt{StateFlow} & Hot & Yes & Yes \\
-\texttt{SharedFlow} & Hot & No (or replayed) & Yes \\
-\texttt{Channel} & Hot & No & No (1-to-1) \\
+\texttt{Flow}        & Cold & \ding{55} & \ding{55} \\
+\texttt{StateFlow}   & Hot  & \ding{51} & \ding{51} \\
+\texttt{SharedFlow}  & Hot  & \ding{55} (unless replay > 0) & \ding{51} \\
+\texttt{Channel}     & Hot  & \ding{55} & \ding{55} (1-to-1) \\
 \hline
 \end{tabular}
 \caption{Flow Variants and Use Cases}
@@ -5630,16 +5634,16 @@ This is the fastest startup path.
 
 \begin{table}[h!]
 \centering
-\begin{tabular}{|l|l|l|l|}
+\begin{tabular}{|l|c|c|l|}
 \hline
 \textbf{Mode} & \textbf{Process Exists} & \textbf{Activity Exists} & \textbf{Startup Cost} \\
 \hline
-Cold Start & NO & NO & High \\
-Warm Start & YES & NO & Medium \\
-Hot Start & YES & YES & Low \\
-
+Cold Start & \ding{55} & \ding{55} & High \\
+Warm Start & \ding{51} & \ding{55} & Medium \\
+Hot Start  & \ding{51} & \ding{51} & Low \\
 \hline
 \end{tabular}
+\caption{App Startup Modes}
 \end{table}
 
 \subsection{Binder IPC and System Services}
